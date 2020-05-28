@@ -20,6 +20,8 @@ import BotaoCabecalho from '../components/BotaoCabecalho'
 
 import medidas from '../medidas/medidas';
 
+import { useSelector } from 'react-redux';
+
 const styles = StyleSheet.create({
     telaPrincipalView: {
         padding: medidas.GRANDE
@@ -32,9 +34,7 @@ const styles = StyleSheet.create({
 const ListaDeContatos = (props) => {
     const [contatoVisualizado, setContatoVisualizado] = useState(null);
     const [isEditando, setIsEditando] = useState(false);
-
-    const [contatos, setContatos] = useState('');
-    const [contadorContatos, setContadorcontatos] = useState(10);
+    const contatos = useSelector(estado => estado.contatos.contatos);
 
     const removerContato = (keyToRemove) => {
         Alert.alert(
@@ -59,7 +59,9 @@ const ListaDeContatos = (props) => {
     };
 
     const verContato = (contato) => {
-        setContatoVisualizado(contato);
+        props.navigation.navigate('DetalheDoContato', {
+            contato: contato
+        })
     };
 
     const adicionarContato = (nome, celular) => {
@@ -128,6 +130,7 @@ const ListaDeContatos = (props) => {
                 <View style={styles.telaPrincipalView}>
                     <FlatList
                         data={contatos}
+                        keyExtractor={contato => contato.key}
                         renderItem={
                             contato => (
                                 <Cartao estilos={styles.contatoItem}>
@@ -148,8 +151,8 @@ const ListaDeContatos = (props) => {
 
 ListaDeContatos.navigationOptions = dadosNav => {
     return {
-        headerTitle: "Lista de contatos",
-        headerRight: (
+        headerTitle: "Contatos",
+        headerRight: () => (
             <HeaderButtons HeaderButtonComponent={BotaoCabecalho}>
                 <Item
                     title="Adicionar"

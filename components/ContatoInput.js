@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native'
+import TiraFoto from './TiraFoto';
 
 import cores from '../constantes/Cores'
 import medidas from '../medidas/medidas';
@@ -7,6 +8,7 @@ import medidas from '../medidas/medidas';
 const ContatoInput = (props) => {
     const [nome, setNome] = useState('');
     const [celular, setCelular] = useState('');
+    const [imagemURI, setImagemURI] = useState();
 
     const capturarNome = (nome) => {
         setNome(nome)
@@ -15,6 +17,10 @@ const ContatoInput = (props) => {
     const capturarCelular = (celular) => {
         setCelular(celular)
     };
+
+    const capturarImagem = (imagemURI) => {
+        setImagemURI(imagemURI);
+    }
 
     return (
         <View>
@@ -33,15 +39,15 @@ const ContatoInput = (props) => {
                     onChangeText={capturarCelular}
                     value={celular}
                 />
+            </View>
+            <View style={styles.contatoView}>
+                <TiraFoto onFotoTirada={capturarImagem} />
+            </View>
+            <View style={styles.contatoView}>
                 <Button
-                    title={props.isEditando ? "salvar" : '+'}
+                    title={'Adicionar'}
                     onPress={() => {
-                        props.onAdicionarContato(nome, celular)
-
-                        if (!props.isEditando) {
-                            setNome('');
-                            setCelular('');
-                        }
+                        props.onAdicionarContato(nome, celular, imagemURI)
                     }}
                 />
             </View>
