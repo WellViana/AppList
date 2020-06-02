@@ -1,30 +1,75 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert, Image} from 'react-native';
+import Cartao from './Cartao';
+import Cores from '../cores/Cores';
+import Medidas from '../medidas/Medidas';
 
-import cores from '../constantes/Cores'
-import medidas from '../medidas/medidas';
+const ContatoItem = (props) => {
 
-const ContatoItem = (props) =>{
-    return (
-        <TouchableOpacity onPress={props.onPress.bind(this, props.contato)} onLongPress={props.onDelete.bind(this, props.contato.key)}>
-            <View style={styles.itemNaLista}>
-                <Text>#{props.contato.key}</Text>
-                <Text>Nome: {props.contato.nome}</Text>
-                <Text>Celular: {props.contato.celular}</Text>
+    const excluirContato = () =>{
+
+        Alert.alert(
+
+            'Excluir Contato',
+            'Deseja realmente Excluir esse Contato',
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "OK", 
+                    onPress: () => props.onDelete(props.keys)
+                }
+            ],
+
+            { cancelable: false }
+        )
+    } 
+
+    return(
+        <TouchableOpacity 
+            style={styles.contatoItem}
+            onLongPress={excluirContato} 
+            onPress={props.contSelecionado.bind(this, props.keys)}
+        >
+            <Image style={styles.imagem} source={{uri:props.imagem}}/>
+            <View style={styles.infoContainer}>
+                <Text>{'Cod:        ' + props.keys}</Text>
+                <Text>{'Nome:       ' + props.contato}</Text>
+                <Text>{'Telefone:   ' + props.telefone}</Text>
             </View>
+            
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    itemNaLista: {
-        padding: medidas.PEQUENO,
-        backgroundColor: cores.CINZA,
-        borderColor: cores.PRETO,
-        borderWidth: medidas.MINIMO,
-        marginBottom: medidas.PEQUENO,
-        borderRadius: medidas.PEQUENO
+    
+    infoContainer: {
+        marginLeft:25,
+        width: 250,
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    imagem:{
+        width:70,
+        height:70,
+        borderRadius:35,
+        backgroundColor: '#ccc',
+        borderColor: Cores.corHeader,
+        borderWidth: 1
+    },
+    contatoItem:{
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        flexDirection:'row',
+        alignItems: 'center'
     }
+
 });
 
 export default ContatoItem;
+

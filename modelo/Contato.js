@@ -1,9 +1,13 @@
+
 class Contato {
-    constructor(key, nome, celular, foto) {
-        this.key = key;
+
+    constructor(id, nome, telefone, imagemURI){
+
+        this.id = id;
         this.nome = nome;
-        this.celular = celular;
-        this.foto = foto;
+        this.telefone = telefone;
+        this.imagemURI = imagemURI;
+
     }
 }
 

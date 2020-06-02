@@ -1,19 +1,20 @@
 import React from 'react';
-import Cores from '../constantes/Cores'
-import {
-    Platform
-} from 'react-native';
-import { HeaderButton, Ionicons } from 'react-navigation-header-buttons';
+import { HeaderButton } from 'react-navigation-header-buttons';
+import { Ionicons } from '@expo/vector-icons'
+import { Platform } from 'react-native';
+import Cores from '../cores/Cores';
+
 
 const BotaoCabecalho = (props) => {
     return (
-        <HeaderButton
+        <HeaderButton 
             {...props}
             IconComponent={Ionicons}
             iconSize={23}
-            color={Platform.OS === 'android' ? 'black' : Cores.primary}
+            color={Platform.OS === 'android' ? 'white' : Cores.corHeader}
         />
-    );
-};
+
+    )
+}
 
 export default BotaoCabecalho;

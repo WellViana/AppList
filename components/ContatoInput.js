@@ -1,81 +1,67 @@
-import React, { useState } from 'react';
-import {View, TextInput, Button, StyleSheet} from 'react-native'
+import React, {useState} from 'react';
+import {View, TextInput, Button, StyleSheet} from 'react-native';
+import Cores from '../cores/Cores';
+import Medidas from '../medidas/Medidas';
 import TiraFoto from './TiraFoto';
 
-import cores from '../constantes/Cores'
-import medidas from '../medidas/medidas';
 
 const ContatoInput = (props) => {
-    const [nome, setNome] = useState('');
-    const [celular, setCelular] = useState('');
+    const [contato, setContato] =useState('');
+    const [telefone, setTelefone] = useState('');
+
     const [imagemURI, setImagemURI] = useState();
 
-    const capturarNome = (nome) => {
-        setNome(nome)
-    };
+    const capturaContato = (contato) =>{setContato(contato);}
+    const capturaTelefone = (telefone) =>{setTelefone(telefone);}
 
-    const capturarCelular = (celular) => {
-        setCelular(celular)
-    };
-
-    const capturarImagem = (imagemURI) => {
-        setImagemURI(imagemURI);
+    const fotoTirada = imagemURI =>{
+        
+        setImagemURI(imagemURI)
     }
 
-    return (
-        <View>
-            <View style={styles.contatoView}>
-                <TextInput
-                    placeholder="Nome"
-                    style={styles.nomeInputText}
-                    onChangeText={capturarNome}
-                    value={nome}
-                />
-            </View>
-            <View style={styles.contatoView}>
-                <TextInput
-                    placeholder="Telefone"
-                    style={styles.telefoneInputText}
-                    onChangeText={capturarCelular}
-                    value={celular}
-                />
-            </View>
-            <View style={styles.contatoView}>
-                <TiraFoto onFotoTirada={capturarImagem} />
-            </View>
-            <View style={styles.contatoView}>
-                <Button
-                    title={'Adicionar'}
-                    onPress={() => {
-                        props.onAdicionarContato(nome, celular, imagemURI)
-                    }}
-                />
-            </View>
+    return(
+        <View style={styles.cadastroContato}>
+            <TextInput 
+                placeholder="Nome" 
+                style={styles.cadastroInputText} 
+                onChangeText={capturaContato}
+                value={contato} 
+            />
+            <TextInput 
+                placeholder="Telefone"
+                keyboardType="number-pad" 
+                style={styles.cadastroInputText} 
+                onChangeText={capturaTelefone}
+                value={telefone}
+            />
+            <TiraFoto onFotoTirada={fotoTirada}/> 
+            <Button 
+                title="Adicionar"
+                color={Cores.corBotao}
+                onPress={() => props.onAdicionarContato(contato, telefone, imagemURI)}
+            />
+
         </View>
     );
 }
 
+
 const styles = StyleSheet.create({
-    contatoView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: medidas.PEQUENO
+
+    cadastroContato: {
+        flexDirection: 'column',
+        justifyContent: 'space-between', 
+        marginBottom: Medidas.twenty,
     },
-    nomeInputText: {
-        width: medidas.GRANDEPORCENTAGEM,
-        borderBottomColor: cores.PRETO,
-        borderBottomWidth: medidas.MINIMO,
-        padding: medidas.PEQUENO,
-        marginBottom: medidas.MEDIO
-    },
-    telefoneInputText: {
-        width: medidas.GRANDEPORCENTAGEM,
-        borderBottomColor: cores.PRETO,
-        borderBottomWidth: medidas.MINIMO,
-        padding: medidas.PEQUENO,
-        marginBottom: medidas.MEDIO
-    }
+    cadastroInputText: {
+        fontSize:Medidas.twenty,
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: Medidas.one,
+        marginBottom: Medidas.five,
+        padding: Medidas.one
+    
+      }
 });
 
 export default ContatoInput;
