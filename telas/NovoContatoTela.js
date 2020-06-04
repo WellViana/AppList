@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, StyleSheet, Alert} from 'react-native';
 
 import { useDispatch } from 'react-redux';
 
@@ -7,15 +7,55 @@ import ContatoInput from '../components/ContatoInput';
 import Medidas from '../medidas/Medidas';
 
 import * as contatosActions from '../store/contatos-actions';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 
 const NovoContatoTela = (props) => {
 
   const dispatch = useDispatch ();
   
-  const adicionaContato = (contato, telefone, imagemURI) => {
-    dispatch(contatosActions.addContato(contato, telefone, imagemURI))
+  const adicionaContato = async(contato, telefone, imagemURI) => {
+
+    const localizacao = await capturarLocalizacao();
+
+    let latitude = localizacao.coords.latitude;
+    let longitude = localizacao.coords.longitude;
+
+    dispatch(contatosActions.addContato(contato, telefone, imagemURI, latitude, longitude))
     props.navigation.goBack();
+  }
+
+  const capturarLocalizacao = async() => {
+    const temPermissao = await verificaPermissoes();
+    if(temPermissao){
+      try{
+        const localizacao = await Location.getCurrentPositionAsync({timeout: 8000});
+        return localizacao;
+      }
+      catch(err){
+        Alert.alert(
+          "Impossível obter localização",
+          "Tente novamente mais tarde ou escolha uma no mapa",
+          [{ text: "Ok" }]
+        )
+      }
+
+    }
+
+  }
+
+  const verificaPermissoes = async () => {
+    const resultado = await Permissions.askAsync(Permissions.LOCATION);
+    if(resultado.status !== "granted"){
+      Alert.alert(
+        'Sem permissão para uso do mecanismo de localização',
+        'É preciso liberar acesso ao mecanismo de localização',
+        [{text: 'OK'}]
+      )
+      return false;
+    }
+    return true;
   }
 
   return (

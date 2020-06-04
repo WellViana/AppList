@@ -9,7 +9,7 @@ export const LISTAR_CONTATOS = 'LISTAR_CONTATOS';
 
 
 
-export const addContato = (nomeContato , telefoneContato, imagem) => {
+export const addContato = (nomeContato , telefoneContato, imagem, latitude, longitude) => {
 
     return async dispatch => {
         
@@ -20,16 +20,21 @@ export const addContato = (nomeContato , telefoneContato, imagem) => {
                 from: imagem,
                 to: novoPath
             })
+            let data = new Date().toString();
+
             const resultadoDB = await inserirContato(
                 nomeContato,
                 telefoneContato,
-                novoPath
+                novoPath,
+                latitude,
+                longitude,
+                data
             );
 
             console.log(resultadoDB);
 
             dispatch({type: ADD_CONTATO, dadosContato: { id: resultadoDB.insertId, nomeContato: nomeContato, telefoneContato: telefoneContato,
-                 imagem: novoPath  } })
+                 imagem: novoPath, lat: latitude , lng: longitude, data: data } })
 
         } catch(err){
             console.log(err);
@@ -42,7 +47,7 @@ export const listarContatos = () => {
     return async dispatch => {
         try{
             const resultadoDB = await buscarContatos();
-            dispatch({type: LISTAR_CONTATOS, constatos: resultadoDB.rows._array });
+            dispatch({type: LISTAR_CONTATOS, contatos: resultadoDB.rows._array });
         }
         catch(err){
             console.log(err);

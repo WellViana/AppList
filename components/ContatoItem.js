@@ -38,6 +38,9 @@ const ContatoItem = (props) => {
                 <Text>{'Cod:        ' + props.keys}</Text>
                 <Text>{'Nome:       ' + props.contato}</Text>
                 <Text>{'Telefone:   ' + props.telefone}</Text>
+                <Text>{'latitude:   ' + props.lat}</Text>
+                <Text>{'longitude:  ' + props.lng}</Text>
+                <Text>{'Data:       ' + props.data}</Text>
             </View>
             
         </TouchableOpacity>

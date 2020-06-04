@@ -12,24 +12,8 @@ const estadoInicial = {
 export default (estado = estadoInicial, action) => {
     switch (action.type){
         case ADD_CONTATO:
-            {/*let id;
-            if(estado.contatos === null || estado.contatos.length === 0 ){
-
-                id = 10
-                
-
-            }else{
-                let maior = 0;
-                for(let i = 0 ; i < estado.contatos.length; i++){
-                    if(estado.contatos[i].id > maior){
-                        maior = estado.contatos[i].id;
-                    }
-                }
-                id = maior + 2
-                
-            }*/}
-
-            const c = new Contato (action.dadosContato.id, action.dadosContato.nomeContato, action.dadosContato.telefoneContato, action.dadosContato.imagem)
+            const c = new Contato (action.dadosContato.id.toString(), action.dadosContato.nomeContato, action.dadosContato.telefoneContato, 
+                action.dadosContato.imagem, action.dadosContato.lat, action.dadosContato.lng, action.dadosContato.data)
             console.log(JSON.stringify(c))
             return {
 
@@ -37,7 +21,7 @@ export default (estado = estadoInicial, action) => {
             }
         case LISTAR_CONTATOS:
             return {
-                contatos: action.contatos.map(c => new Contato (c.id.toString(), c.nome, c.telefone, c.imagemUri))
+                contatos: action.contatos.map(c => new Contato (c.id.toString(), c.nome, c.telefone, c.imagemUri, c.latitude, c.longitude, c.data))
             }
         
         case DEL_CONTATO:
